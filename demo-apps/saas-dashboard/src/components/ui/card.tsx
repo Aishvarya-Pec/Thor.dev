@@ -1,0 +1,1 @@
+// Thor.dev generated Card component

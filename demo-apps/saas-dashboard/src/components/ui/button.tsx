@@ -1,0 +1,1 @@
+// Thor.dev generated Button component
