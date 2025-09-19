@@ -81,12 +81,12 @@ Thor.dev is a revolutionary multi-agent workspace that combines the power of AI 
    npm install
    \`\`\`
 
-3. **Set up environment variables:**
+3. **Set up environment variables (optional):**
    \`\`\`bash
    cp .env.example .env.local
    \`\`\`
    
-   Fill in your environment variables (see [Environment Variables](#environment-variables) section).
+   **Note:** Thor.dev works out of the box without any API keys! The `.env.local` file is optional and only needed if you want to use real integrations instead of the built-in mock services.
 
 4. **Set up the database:**
    \`\`\`bash
@@ -103,6 +103,9 @@ Thor.dev is a revolutionary multi-agent workspace that combines the power of AI 
    - Dashboard: [http://localhost:3000](http://localhost:3000)
    - Landing Page: [http://localhost:5173](http://localhost:5173)
    - WebSocket Server: ws://localhost:8080
+
+7. **Sign in with Guest Mode:**
+   Click "Try Thor.dev Now (Guest Mode)" to start using the platform immediately - no registration required!
 
 ## 📁 Project Structure
 
@@ -132,44 +135,52 @@ thor-dev/
 └── docs/                   # Documentation
 \`\`\`
 
-## 🔧 Environment Variables
+## 🔧 Environment Variables (Optional)
 
-Create a \`.env.local\` file in the root directory:
+**Thor.dev works completely without any API keys!** All services have built-in mock implementations that provide full functionality for development and testing.
+
+If you want to use real integrations, create a \`.env.local\` file:
 
 \`\`\`bash
-# Database
+# Database (SQLite - no setup required)
 DATABASE_URL="file:./dev.db"
 
 # NextAuth Configuration
 NEXTAUTH_URL="http://localhost:3000"
-NEXTAUTH_SECRET="your-nextauth-secret-here"
+NEXTAUTH_SECRET="thor-dev-local-secret-key-for-development-only"
 
-# OAuth Providers
+# Optional: Real OAuth Providers (uses guest mode if empty)
 GOOGLE_CLIENT_ID="your-google-client-id"
 GOOGLE_CLIENT_SECRET="your-google-client-secret"
 
-# GitHub Integration
+# Optional: Real GitHub Integration (uses local storage if empty)
 GITHUB_TOKEN="your-github-personal-access-token"
 
-# Deployment Services
+# Optional: Real Deployment Services (generates static files if empty)
 VERCEL_TOKEN="your-vercel-token"
 NETLIFY_TOKEN="your-netlify-token"
 
-# WebSocket Server
-WS_PORT=8080
-WS_HOST="localhost"
-
-# Email Configuration
+# Optional: Real Email Service (logs to console if empty)
 EMAIL_SERVER_HOST="smtp.gmail.com"
 EMAIL_SERVER_PORT=587
 EMAIL_SERVER_USER="your-email@gmail.com"
 EMAIL_SERVER_PASSWORD="your-app-password"
 EMAIL_FROM="noreply@thor.dev"
 
-# LLM Integration (Optional)
+# Optional: Real LLM Integration (uses templates if empty)
 OPENAI_API_KEY="your-openai-api-key"
 ANTHROPIC_API_KEY="your-anthropic-api-key"
 \`\`\`
+
+### 🆓 Built-in Mock Services
+
+When API keys are not provided, Thor.dev automatically uses:
+
+- **Mock LLM Service:** Template-based intelligent code generation
+- **Mock GitHub Service:** Local file storage with version control
+- **Mock Deployment Service:** Static file generation with preview
+- **Mock Email Service:** Console logging for magic links
+- **Guest Authentication:** Immediate access without registration
 
 ## 🏗️ Architecture
 

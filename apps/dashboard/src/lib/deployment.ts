@@ -48,6 +48,18 @@ interface DeploymentResult {
  */
 export async function createGitHubRepo(config: GitHubRepoConfig): Promise<DeploymentResult> {
   try {
+    // Check if we should use mock services
+    const { MockGitHubService, shouldUseMockServices } = await import('./mock-services')
+    
+    if (shouldUseMockServices() || !config.githubToken) {
+      console.log('🔧 Using mock GitHub service (no API key provided)')
+      return await MockGitHubService.createRepository({
+        projectPath: config.projectPath,
+        projectName: config.projectName,
+        description: config.description,
+      })
+    }
+
     const octokit = new Octokit({
       auth: config.githubToken,
     })
@@ -95,6 +107,17 @@ export async function createGitHubRepo(config: GitHubRepoConfig): Promise<Deploy
  */
 export async function deployToVercel(config: VercelDeployConfig): Promise<DeploymentResult> {
   try {
+    // Check if we should use mock services
+    const { MockDeploymentService, shouldUseMockServices } = await import('./mock-services')
+    
+    if (shouldUseMockServices() || !config.vercelToken) {
+      console.log('🔧 Using mock deployment service (no API key provided)')
+      return await MockDeploymentService.deployToStatic({
+        projectName: config.projectName,
+        projectPath: config.repoUrl.replace('file://', ''),
+      })
+    }
+
     console.log(`🚀 Deploying ${config.projectName} to Vercel...`)
 
     // Create Vercel project
@@ -171,6 +194,17 @@ export async function deployToVercel(config: VercelDeployConfig): Promise<Deploy
  */
 export async function deployToNetlify(config: NetlifyDeployConfig): Promise<DeploymentResult> {
   try {
+    // Check if we should use mock services
+    const { MockDeploymentService, shouldUseMockServices } = await import('./mock-services')
+    
+    if (shouldUseMockServices() || !process.env.NETLIFY_TOKEN) {
+      console.log('🔧 Using mock deployment service (no API key provided)')
+      return await MockDeploymentService.deployToStatic({
+        projectName: config.projectName,
+        projectPath: config.projectPath,
+      })
+    }
+
     console.log(`🚀 Deploying ${config.projectName} to Netlify...`)
 
     // Create site

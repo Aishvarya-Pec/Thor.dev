@@ -382,13 +382,27 @@ export async function generateProject(request: GenerationRequest): Promise<Gener
 }
 
 async function generateAIFiles(prompt: string, config: ProjectConfig): Promise<Record<string, string>> {
-  // TODO: Integrate with actual LLM provider (OpenAI, Anthropic, etc.)
-  // For now, return mock files based on common patterns in the prompt
+  // Use mock LLM service for free, open-source generation
+  const { MockLLMService, shouldUseMockServices } = await import('./mock-services')
   
   const files: Record<string, string> = {}
 
-  // Simple keyword-based file generation (replace with actual AI)
-  if (prompt.toLowerCase().includes('dashboard') || prompt.toLowerCase().includes('admin')) {
+  if (shouldUseMockServices()) {
+    // Use template-based generation
+    const result = await MockLLMService.generateContent(prompt)
+    if (result.success && result.content) {
+      try {
+        const generatedFiles = JSON.parse(result.content)
+        Object.assign(files, generatedFiles)
+      } catch (error) {
+        console.warn('Failed to parse generated files, using fallback')
+      }
+    }
+  }
+
+  // Fallback: Simple keyword-based file generation
+  if (Object.keys(files).length === 0) {
+    if (prompt.toLowerCase().includes('dashboard') || prompt.toLowerCase().includes('admin')) {
     files['src/app/dashboard/page.tsx'] = `export default function Dashboard() {
   return (
     <div className="p-8">

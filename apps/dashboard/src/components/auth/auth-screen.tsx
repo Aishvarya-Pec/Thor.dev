@@ -35,12 +35,22 @@ export function AuthScreen() {
     }
   }
 
-  const handleGoogleSignIn = async () => {
+    const handleGoogleSignIn = async () => {
     setIsLoading(true)
     try {
       await signIn('google', { callbackUrl: '/' })
     } catch (error) {
       console.error('Google sign in error:', error)
+      setIsLoading(false)
+    }
+  }
+
+  const handleGuestSignIn = async () => {
+    setIsLoading(true)
+    try {
+      await signIn('guest', { callbackUrl: '/' })
+    } catch (error) {
+      console.error('Guest sign in error:', error)
       setIsLoading(false)
     }
   }
@@ -104,19 +114,19 @@ export function AuthScreen() {
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            {/* Google Sign In */}
+            {/* Guest Access - Always Available */}
             <Button
-              onClick={handleGoogleSignIn}
+              onClick={handleGuestSignIn}
               disabled={isLoading}
-              variant="outline"
+              variant="lightning"
               className="w-full"
             >
               {isLoading ? (
                 <LoadingSpinner size="sm" />
               ) : (
                 <>
-                  <Github className="mr-2 h-4 w-4" />
-                  Continue with Google
+                  <Zap className="mr-2 h-4 w-4" />
+                  Try Thor.dev Now (Guest Mode)
                 </>
               )}
             </Button>
@@ -126,9 +136,28 @@ export function AuthScreen() {
                 <span className="w-full border-t border-thor-border" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-cosmic-800 px-2 text-gray-400">Or continue with</span>
+                <span className="bg-cosmic-800 px-2 text-gray-400">Or sign in with</span>
               </div>
             </div>
+
+            {/* Google Sign In - Only if configured */}
+            {process.env.NEXT_PUBLIC_GOOGLE_AUTH_ENABLED && (
+              <Button
+                onClick={handleGoogleSignIn}
+                disabled={isLoading}
+                variant="outline"
+                className="w-full"
+              >
+                {isLoading ? (
+                  <LoadingSpinner size="sm" />
+                ) : (
+                  <>
+                    <Github className="mr-2 h-4 w-4" />
+                    Continue with Google
+                  </>
+                )}
+              </Button>
+            )}
 
             {/* Email Sign In */}
             <form onSubmit={handleEmailSignIn} className="space-y-4">
