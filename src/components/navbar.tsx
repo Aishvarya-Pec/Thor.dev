@@ -1,6 +1,5 @@
 import gsap from "gsap";
 import { useEffect, useRef, useState } from "react";
-import { FaGithub } from "react-icons/fa";
 import { TiLocationArrow } from "react-icons/ti";
 import { useWindowScroll } from "react-use";
 
@@ -62,16 +61,8 @@ export const Navbar = () => {
         <nav className="flex size-full items-center justify-between p-4">
           <div className="flex items-center gap-7">
             <a href="#hero" className="transition hover:opacity-75">
-              <img src="/img/logo.png" alt="Logo" className="w-10" />
+              <img src="/img/thorlogo.png" alt="Logo" className="w-16" />
             </a>
-
-            <Button
-              id="product-button"
-              rightIcon={TiLocationArrow}
-              containerClass="bg-blue-50 md:flex hidden items-center justify-center gap-1"
-            >
-              Products
-            </Button>
           </div>
 
           <div className="flex h-full items-center">
@@ -112,15 +103,7 @@ export const Navbar = () => {
                   })}
               </button>
 
-              <a
-                href={LINKS.sourceCode}
-                target="_blank"
-                rel="noreferrer noopener"
-                className="transition hover:opacity-75"
-                title="Source Code"
-              >
-                <FaGithub className="size-5 text-white" />
-              </a>
+
             </div>
           </div>
         </nav>

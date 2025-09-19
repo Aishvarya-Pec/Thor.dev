@@ -53,21 +53,31 @@ interface BentoCardProps {
 }
 
 const BentoCard = ({ src, title, description }: BentoCardProps) => {
+  const isVideo = src.endsWith('.mp4');
+  
   return (
     <article className="relative size-full">
-      <video
-        src={src}
-        loop
-        muted
-        autoPlay
-        className="absolute left-0 top-0 size-full object-cover object-center"
-      />
+      {isVideo ? (
+        <video
+          src={src}
+          loop
+          muted
+          autoPlay
+          className="absolute left-0 top-0 size-full object-cover object-center"
+        />
+      ) : (
+        <img
+          src={src}
+          alt=""
+          className="absolute left-0 top-0 size-full object-cover object-center"
+        />
+      )}
 
       <div className="relative z-10 flex size-full flex-col justify-between p-5 text-blue-50">
         <div>
           <h1 className="bento-title special-font">{title}</h1>
           {description && (
-            <p className="tetx-xl mt-3 max-w-64 md:text-base">{description}</p>
+            <p className="text-lg mt-3 max-w-64 font-medium md:text-xl">{description}</p>
           )}
         </div>
       </div>
@@ -81,13 +91,11 @@ export const Features = () => {
       <div className="container mx-auto px-3 md:px-10">
         <div className="px-5 py-32">
           <p className="font-circular-web text-lg text-blue-50">
-            Into the Metagame Layer
+            Into the Builder's Realm
           </p>
 
           <p className="max-w-md font-circular-web text-lg text-blue-50 opacity-50">
-            Immerse yourself in a rich and ever-expanding universe where a
-            vibrant array of products converge into an interconnected overlay
-            experience on your world.
+            Step into a limitless universe where every app idea forges into reality, converging into one powerful creation space.
           </p>
         </div>
 
@@ -96,10 +104,10 @@ export const Features = () => {
             src={VIDEO_LINKS.feature1}
             title={
               <>
-                radia<b>n</b>t
+                Mj<b>ö</b>lnir
               </>
             }
-            description="A cross-platform metagame app, turning your activities across Web2 and Web3 games into a rewarding adventure."
+            description="A next-gen building app, uniting your tools and workflows into one hammer-strong platform."
           />
         </BentoTilt>
 
@@ -112,10 +120,10 @@ export const Features = () => {
               src={VIDEO_LINKS.feature2}
               title={
                 <>
-                  zig<b>m</b>a
+                  Storm<b>B</b>reaker
                 </>
               }
-              description="An anime and gaming-inspired NFT collection - the IP primed for expansion."
+              description="A cross-platform app builder - transforming imagination into scalable projects across web and mobile."
             />
           </BentoTilt>
 
@@ -124,10 +132,10 @@ export const Features = () => {
               src={VIDEO_LINKS.feature3}
               title={
                 <>
-                  n<b>e</b>xus
+                  Bifr<b>ö</b>st
                 </>
               }
-              description="A gamified social hub, adding a new dimension of play to social interaction for Web3 communities."
+              description="A bridge of creation, linking imagination to execution across every platform."
             />
           </BentoTilt>
 
@@ -136,10 +144,10 @@ export const Features = () => {
               src={VIDEO_LINKS.feature4}
               title={
                 <>
-                  az<b>u</b>l
+                  L<b>o</b>ki
                 </>
               }
-              description="A cross-world AI Agent - elevating your gameplay to be more fun and productive."
+              description="An intelligent forge - tricking complexity and revealing simple, powerful builds."
             />
           </BentoTilt>
 
