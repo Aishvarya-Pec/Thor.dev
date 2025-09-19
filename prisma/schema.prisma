@@ -1,0 +1,138 @@
+// Thor.dev Database Schema
+// SQLite for local development, easily configurable for production
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  
+  // Thor.dev specific fields
+  githubToken   String?   // Encrypted GitHub token for repo creation
+  preferences   String?   // JSON string for user preferences
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  accounts Account[]
+  sessions Session[]
+  projects Project[]
+
+  @@map("users")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  
+  // Project metadata
+  status      String   @default("draft") // draft, generated, deployed, archived
+  type        String   @default("nextjs") // nextjs, react, vue, etc.
+  
+  // File paths and URLs
+  projectPath String?  // Path to generated project files
+  previewUrl  String?  // URL for preview iframe
+  deployUrl   String?  // Deployed application URL
+  repoUrl     String?  // GitHub repository URL
+  
+  // Generation settings
+  prompt      String?  // Original generation prompt
+  config      String?  // JSON configuration used for generation
+  
+  // Collaboration
+  isPublic    Boolean  @default(false)
+  
+  // Timestamps
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  deployedAt  DateTime?
+  
+  // Relations
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  versions    ProjectVersion[]
+  
+  @@map("projects")
+}
+
+model ProjectVersion {
+  id          String   @id @default(cuid())
+  projectId   String
+  version     String   // semantic version or timestamp
+  description String?  // Version description/changelog
+  
+  // Version data
+  filesSnapshot String  // JSON snapshot of all files
+  metadata      String? // Additional version metadata
+  
+  createdAt   DateTime @default(now())
+  
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  @@unique([projectId, version])
+  @@map("project_versions")
+}
+
+model Agent {
+  id          String   @id @default(cuid())
+  name        String   // Designer AI, Coder AI, Tester AI, Deployer AI
+  type        String   // designer, coder, tester, deployer
+  description String?
+  config      String?  // JSON configuration for agent behavior
+  isActive    Boolean  @default(true)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@unique([name, type])
+  @@map("agents")
+}

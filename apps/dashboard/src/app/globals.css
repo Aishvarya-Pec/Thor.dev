@@ -1,0 +1,283 @@
+@import url("https://fonts.cdnfonts.com/css/general-sans");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Thor.dev Theme Variables */
+:root {
+  --background: 220 65% 3.5%;
+  --foreground: 220 10% 97%;
+  --card: 220 63% 7%;
+  --card-foreground: 220 10% 97%;
+  --popover: 220 63% 7%;
+  --popover-foreground: 220 10% 97%;
+  --primary: 262 83% 58%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 220 63% 7%;
+  --secondary-foreground: 220 10% 97%;
+  --muted: 220 63% 7%;
+  --muted-foreground: 220 17% 65%;
+  --accent: 220 63% 7%;
+  --accent-foreground: 220 10% 97%;
+  --destructive: 0 63% 31%;
+  --destructive-foreground: 220 10% 97%;
+  --border: 220 63% 12%;
+  --input: 220 63% 12%;
+  --ring: 262 83% 58%;
+  --radius: 0.75rem;
+  
+  /* Thor.dev custom properties */
+  --thor-primary: #5724ff;
+  --thor-secondary: #4fb7dd;
+  --thor-accent: #edff66;
+  --thor-background: #dfdff0;
+  --thor-foreground: #101010;
+  --thor-muted: #f0f2fa;
+  --thor-border: rgba(255, 255, 255, 0.2);
+  
+  /* Cosmic theme */
+  --thor-cosmic-light: #1e293b;
+  --thor-cosmic-dark: #0f172a;
+  --thor-cosmic-accent: #5724ff;
+  
+  /* Lightning accents */
+  --thor-lightning-primary: #f59e0b;
+  --thor-lightning-secondary: #fcd34d;
+  --thor-lightning-glow: #5724ff;
+}
+
+.dark {
+  --background: 220 65% 3.5%;
+  --foreground: 220 10% 97%;
+  --card: 220 63% 7%;
+  --card-foreground: 220 10% 97%;
+  --popover: 220 63% 7%;
+  --popover-foreground: 220 10% 97%;
+  --primary: 262 83% 58%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 220 63% 7%;
+  --secondary-foreground: 220 10% 97%;
+  --muted: 220 63% 7%;
+  --muted-foreground: 220 17% 65%;
+  --accent: 220 63% 7%;
+  --accent-foreground: 220 10% 97%;
+  --destructive: 0 63% 31%;
+  --destructive-foreground: 220 10% 97%;
+  --border: 220 63% 12%;
+  --input: 220 63% 12%;
+  --ring: 262 83% 58%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  body {
+    @apply bg-gradient-to-br from-cosmic-900 via-cosmic-800 to-cosmic-900 text-foreground font-general;
+    background-attachment: fixed;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  
+  /* Custom font faces from landing page */
+  @font-face {
+    font-family: "circular-web";
+    src: url("/fonts/circularweb-book.woff2") format("woff2");
+  }
+
+  @font-face {
+    font-family: "general";
+    src: url("/fonts/general.woff2") format("woff2");
+  }
+
+  @font-face {
+    font-family: "robert-medium";
+    src: url("/fonts/robert-medium.woff2") format("woff2");
+  }
+
+  @font-face {
+    font-family: "robert-regular";
+    src: url("/fonts/robert-regular.woff2") format("woff2");
+  }
+
+  @font-face {
+    font-family: "zentry";
+    src: url("/fonts/zentry-regular.woff2") format("woff2");
+  }
+}
+
+@layer utilities {
+  /* Thor.dev specific utilities */
+  .border-hsla {
+    @apply border border-white/20;
+  }
+
+  .floating-panel {
+    @apply rounded-lg border bg-cosmic-800/90 backdrop-blur-md shadow-2xl;
+  }
+
+  .absolute-center {
+    @apply absolute left-1/2 top-1/2 translate-x-[-50%] translate-y-[-50%];
+  }
+
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+
+  .glass-effect {
+    @apply bg-white/10 backdrop-blur-md border border-white/20;
+  }
+
+  .cosmic-gradient {
+    @apply bg-gradient-to-br from-cosmic-800 via-cosmic-700 to-cosmic-900;
+  }
+
+  .lightning-gradient {
+    @apply bg-gradient-to-r from-lightning-400 to-lightning-500;
+  }
+
+  .thor-glow {
+    box-shadow: 0 0 20px rgba(87, 36, 255, 0.3);
+  }
+
+  .thor-glow-strong {
+    box-shadow: 0 0 40px rgba(87, 36, 255, 0.5), 0 0 80px rgba(87, 36, 255, 0.3);
+  }
+
+  /* Loading spinner from landing page */
+  .three-body {
+    --uib-size: 35px;
+    --uib-speed: 0.8s;
+    --uib-color: #5724ff;
+    position: relative;
+    display: inline-block;
+    height: var(--uib-size);
+    width: var(--uib-size);
+    animation: spin78236 calc(var(--uib-speed) * 2.5) infinite linear;
+  }
+
+  .three-body__dot {
+    position: absolute;
+    height: 100%;
+    width: 30%;
+  }
+
+  .three-body__dot:after {
+    content: "";
+    position: absolute;
+    height: 0%;
+    width: 100%;
+    padding-bottom: 100%;
+    background-color: var(--uib-color);
+    border-radius: 50%;
+  }
+
+  .three-body__dot:nth-child(1) {
+    bottom: 5%;
+    left: 0;
+    transform: rotate(60deg);
+    transform-origin: 50% 85%;
+  }
+
+  .three-body__dot:nth-child(1)::after {
+    bottom: 0;
+    left: 0;
+    animation: wobble1 var(--uib-speed) infinite ease-in-out;
+    animation-delay: calc(var(--uib-speed) * -0.3);
+  }
+
+  .three-body__dot:nth-child(2) {
+    bottom: 5%;
+    right: 0;
+    transform: rotate(-60deg);
+    transform-origin: 50% 85%;
+  }
+
+  .three-body__dot:nth-child(2)::after {
+    bottom: 0;
+    left: 0;
+    animation: wobble1 var(--uib-speed) infinite calc(var(--uib-speed) * -0.15)
+      ease-in-out;
+  }
+
+  .three-body__dot:nth-child(3) {
+    bottom: -5%;
+    left: 0;
+    transform: translateX(116.666%);
+  }
+
+  .three-body__dot:nth-child(3)::after {
+    top: 0;
+    left: 0;
+    animation: wobble2 var(--uib-speed) infinite ease-in-out;
+  }
+
+  /* Scrollbar styling */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(87, 36, 255, 0.6);
+    border-radius: 3px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(87, 36, 255, 0.8);
+  }
+}
+
+@keyframes spin78236 {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes wobble1 {
+  0%,
+  100% {
+    transform: translateY(0%) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-66%) scale(0.65);
+    opacity: 0.8;
+  }
+}
+
+@keyframes wobble2 {
+  0%,
+  100% {
+    transform: translateY(0%) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(66%) scale(0.65);
+    opacity: 0.8;
+  }
+}
+
+/* Code editor theme */
+.monaco-editor {
+  background: transparent !important;
+}
+
+.monaco-editor .margin {
+  background: transparent !important;
+}
+
+/* Dock animation */
+@keyframes dock-bounce {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
