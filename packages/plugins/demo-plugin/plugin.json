@@ -1,0 +1,39 @@
+{
+  "name": "demo-plugin",
+  "version": "1.0.0",
+  "description": "Demo plugin that adds README, LICENSE, and metadata.json to any generated project",
+  "author": "Thor.dev Team",
+  "entry": "index.js",
+  "dependencies": {},
+  "permissions": [
+    "file:write",
+    "file:read"
+  ],
+  "hooks": [
+    "post-generation",
+    "pre-deploy"
+  ],
+  "config": {
+    "addReadme": {
+      "type": "boolean",
+      "default": true,
+      "description": "Add README.md file"
+    },
+    "addLicense": {
+      "type": "boolean", 
+      "default": true,
+      "description": "Add LICENSE file"
+    },
+    "licenseType": {
+      "type": "string",
+      "default": "MIT",
+      "options": ["MIT", "Apache-2.0", "GPL-3.0", "BSD-3-Clause"],
+      "description": "License type to use"
+    },
+    "addMetadata": {
+      "type": "boolean",
+      "default": true,
+      "description": "Add metadata.json file"
+    }
+  }
+}
