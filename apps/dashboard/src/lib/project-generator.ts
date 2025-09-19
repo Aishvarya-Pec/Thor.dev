@@ -382,20 +382,99 @@ export async function generateProject(request: GenerationRequest): Promise<Gener
 }
 
 async function generateAIFiles(prompt: string, config: ProjectConfig): Promise<Record<string, string>> {
-  // Use mock LLM service for free, open-source generation
-  const { MockLLMService, shouldUseMockServices } = await import('./mock-services')
+  // Use AI services (Ollama, HuggingFace, etc.) for intelligent generation
+  const { aiService } = await import('./ai-services')
   
   const files: Record<string, string> = {}
 
-  if (shouldUseMockServices()) {
-    // Use template-based generation
+  try {
+    console.log('🤖 Using AI services for intelligent code generation...')
+    
+    // Generate main component/page based on prompt
+    const mainComponentResult = await aiService.generateCode({
+      prompt: `Create a ${config.framework} application for: ${prompt}. 
+               Generate the main page component with proper TypeScript types, 
+               Tailwind CSS styling, and modern React patterns.`,
+      language: 'typescript',
+      framework: config.framework,
+      context: `Project type: ${config.framework}, Features: ${config.features?.join(', ')}`,
+    })
+
+    if (mainComponentResult.success && mainComponentResult.content) {
+      files['src/app/page.tsx'] = mainComponentResult.content
+      console.log(`✅ Generated main component using ${mainComponentResult.provider}`)
+    }
+
+    // Generate additional components based on prompt keywords
+    const keywords = prompt.toLowerCase()
+    
+    if (keywords.includes('dashboard') || keywords.includes('admin')) {
+      const dashboardResult = await aiService.generateCode({
+        prompt: `Create a comprehensive dashboard component with stats cards, charts, and data tables for: ${prompt}`,
+        language: 'typescript',
+        framework: config.framework,
+        context: 'Dashboard application with modern UI components',
+      })
+      
+      if (dashboardResult.success) {
+        files['src/app/dashboard/page.tsx'] = dashboardResult.content
+        console.log(`✅ Generated dashboard using ${dashboardResult.provider}`)
+      }
+    }
+
+    if (keywords.includes('api') || keywords.includes('backend')) {
+      const apiResult = await aiService.generateCode({
+        prompt: `Create REST API endpoints for: ${prompt}. Include proper error handling, validation, and TypeScript types.`,
+        language: 'typescript',
+        framework: config.framework,
+        context: 'Next.js API routes with proper structure',
+      })
+      
+      if (apiResult.success) {
+        files['src/app/api/main/route.ts'] = apiResult.content
+        console.log(`✅ Generated API routes using ${apiResult.provider}`)
+      }
+    }
+
+    if (keywords.includes('auth') || keywords.includes('login')) {
+      const authResult = await aiService.generateCode({
+        prompt: `Create authentication components and pages for: ${prompt}. Include login, signup, and protected routes.`,
+        language: 'typescript',
+        framework: config.framework,
+        context: 'NextAuth.js authentication system',
+      })
+      
+      if (authResult.success) {
+        files['src/components/auth/login-form.tsx'] = authResult.content
+        console.log(`✅ Generated auth components using ${authResult.provider}`)
+      }
+    }
+
+    // Generate utility components
+    const utilsResult = await aiService.generateCode({
+      prompt: `Create utility functions and helpers for: ${prompt}. Include form validation, data formatting, and common utilities.`,
+      language: 'typescript',
+      framework: config.framework,
+      context: 'Utility functions and helpers',
+    })
+    
+    if (utilsResult.success) {
+      files['src/lib/utils.ts'] = utilsResult.content
+      console.log(`✅ Generated utilities using ${utilsResult.provider}`)
+    }
+
+  } catch (error) {
+    console.warn('AI generation failed, falling back to templates:', error)
+    
+    // Fallback to enhanced template generation
+    const { MockLLMService } = await import('./mock-services')
     const result = await MockLLMService.generateContent(prompt)
     if (result.success && result.content) {
       try {
         const generatedFiles = JSON.parse(result.content)
         Object.assign(files, generatedFiles)
       } catch (error) {
-        console.warn('Failed to parse generated files, using fallback')
+        console.warn('Failed to parse generated files, using basic fallback')
       }
     }
   }

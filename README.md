@@ -107,6 +107,27 @@ Thor.dev is a revolutionary multi-agent workspace that combines the power of AI 
 7. **Sign in with Guest Mode:**
    Click "Try Thor.dev Now (Guest Mode)" to start using the platform immediately - no registration required!
 
+## 🤖 AI Setup (Optional - Recommended for Best Experience)
+
+### Quick Ollama Setup (5 minutes)
+```bash
+# 1. Install Ollama
+curl -fsSL https://ollama.ai/install.sh | sh
+
+# 2. Start Ollama server
+ollama serve
+
+# 3. Install CodeLlama model (in another terminal)
+ollama pull codellama:7b
+
+# 4. Test it works
+curl http://localhost:11434/api/tags
+```
+
+That's it! Thor.dev will automatically detect and use Ollama for AI-powered features.
+
+**For detailed AI setup:** See [AI Setup Guide](./docs/AI-Setup.md)
+
 ## 📁 Project Structure
 
 \`\`\`
@@ -172,15 +193,39 @@ OPENAI_API_KEY="your-openai-api-key"
 ANTHROPIC_API_KEY="your-anthropic-api-key"
 \`\`\`
 
-### 🆓 Built-in Mock Services
+### 🤖 AI-Powered Development (Competes with Cursor, Bolt & Lovable)
 
-When API keys are not provided, Thor.dev automatically uses:
+Thor.dev uses cutting-edge AI services to provide intelligent coding assistance:
 
-- **Mock LLM Service:** Template-based intelligent code generation
-- **Mock GitHub Service:** Local file storage with version control
-- **Mock Deployment Service:** Static file generation with preview
-- **Mock Email Service:** Console logging for magic links
-- **Guest Authentication:** Immediate access without registration
+#### 🦙 **Ollama Integration (Recommended)**
+- **Local AI models** (CodeLlama, Llama2) running on your machine
+- **100% private** - your code never leaves your computer
+- **Zero cost** - no API fees or usage limits
+- **Instant responses** - no network latency
+- **Specialized coding models** - trained specifically for software development
+
+#### 🌐 **Multi-Provider AI Support**
+- **Hugging Face** - Free tier with 1000 requests/month
+- **Cohere** - Free tier with generous limits
+- **OpenAI/Anthropic** - Premium options for advanced features
+- **Smart fallbacks** - automatically switches to best available service
+
+#### 🎯 **Intelligent Features**
+- **Context-aware code generation** - understands your entire project
+- **Multi-file analysis** - analyzes relationships between files
+- **Specialized agents** - Designer AI, Coder AI, Tester AI, Deployer AI
+- **Real-time code review** - instant feedback and suggestions
+- **Automated testing** - generates comprehensive test suites
+
+### 🆓 Built-in Mock Services (Zero Setup Required)
+
+When no AI services are configured, Thor.dev provides:
+
+- **Enhanced Template Engine** - Intelligent code generation based on patterns
+- **Mock GitHub Service** - Local file storage with version control
+- **Mock Deployment Service** - Static file generation with preview
+- **Mock Email Service** - Console logging for magic links
+- **Guest Authentication** - Immediate access without registration
 
 ## 🏗️ Architecture
 
